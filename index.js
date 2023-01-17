@@ -53,7 +53,12 @@ app.post("/webhook",(req,res)=>{ //i want some
                console.log("from "+from);
                console.log("boady param "+msg_body);
 
-               // if(msg_body)
+               let massagee;
+
+               if(msg_body == "hi")
+               {
+                    massagee = "welcome to dpinfonet";
+               }
                
 
                axios({
@@ -63,7 +68,7 @@ app.post("/webhook",(req,res)=>{ //i want some
                        messaging_product:"whatsapp",
                        to:from,
                        text:{
-                           body:"Hi.. I'm Prasath, your message is "+msg_body
+                           body: massagee
                        }
                    },
                    headers:{

@@ -122,5 +122,5 @@ app.post("/webhook",(req,res)=>{ //i want some
 });
 
 app.get("/",(req,res)=>{
-    res.status(200).send("hello this is webhook setup dp"+JSON.stringify(user));
+    res.status(200).send("hello this is webhook setup dp"+JSON.stringify(user1));
 });

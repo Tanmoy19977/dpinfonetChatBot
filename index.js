@@ -85,12 +85,12 @@ app.post("/webhook",(req,res)=>{ //i want some
                   console.log(err);
                }
 
-               dynamo_db_con_getter(from);
+               let get_item_swag = dynamo_db_con_getter(from);
                
-               console.log(getter_item);
+               console.log(JSON.stringify(get_item_swag));
                if(msg_body == "hi")
                {
-                    massagee = "welcome to dpinfonet, your number"+getter_item.phone_no+" you send"+getter_item.message_body;
+                    massagee = "welcome to dpinfonet, your number"+get_item_swag.phone_no+" you send"+get_item_swag.message_body;
                }
 
                

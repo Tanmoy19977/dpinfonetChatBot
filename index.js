@@ -36,7 +36,7 @@ app.get("/webhook",(req,res)=>{
 });
 
 async function dynamo_db_con(phone_no, user_name,message_body){
-  let user = await user.set(user_name, {
+  let user = await animals.set(user_name, {
     phone_no: phone_no,
     message_body: message_body
 });

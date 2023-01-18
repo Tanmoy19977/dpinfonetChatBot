@@ -2,7 +2,10 @@ const express=require("express");
 const body_parser=require("body-parser");
 const axios=require("axios");
 require('dotenv').config();
-
+const CyclicDb = require("@cyclic.sh/dynamodb")
+const db = CyclicDb("long-jade-grasshopper-capCyclicDB")
+var getter_item;
+const user = db.collection("user")
 const app=express().use(body_parser.json());
 
 const token=process.env.TOKEN;
@@ -32,11 +35,26 @@ app.get("/webhook",(req,res)=>{
 
 });
 
+async function dynamo_db_con(phone_no, user_name,message_body){
+  let user = await user.set(user_name, {
+    phone_no: phone_no,
+    message_body: message_body
+});
+}
+
+async function dynamo_db_con_getter(){
+  getter_item = await animals.get("leo");
+}
+
+
 app.post("/webhook",(req,res)=>{ //i want some 
     console.log("Hi this is swagoto and polley");
     let body_param=req.body;
 
     console.log(JSON.stringify(body_param,null,2));
+
+
+
 
     if(body_param.object){
         console.log("inside body param");
@@ -54,13 +72,23 @@ app.post("/webhook",(req,res)=>{ //i want some
                console.log("boady param "+msg_body);
 
                let massagee;
+               try{
+                  dynamo_db_con(phon_no_id,from,msg_body).then;
+               }catch(err){
+                  console.log(err);
+               }
 
+               dynamo_db_con_getter().then;
+               
+               console.log(getter_item);
                if(msg_body == "hi")
                {
-                    massagee = "welcome to dpinfonet";
+                    massagee = "welcome to dpinfonet, your number"+getter_item.phone_no+" you send"+getter_item.message_body;
                }
-               
 
+               
+               
+              
                axios({
                    method:"POST",
                    url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,

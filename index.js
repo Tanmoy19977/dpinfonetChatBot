@@ -2,10 +2,9 @@ const express=require("express");
 const body_parser=require("body-parser");
 const axios=require("axios");
 require('dotenv').config();
-const CyclicDb = require("@cyclic.sh/dynamodb")
-const db = CyclicDb("long-jade-grasshopper-capCyclicDB")
+
 var getter_item;
-const user = db.collection("user")
+
 const app=express().use(body_parser.json());
 
 const token=process.env.TOKEN;
@@ -36,14 +35,17 @@ app.get("/webhook",(req,res)=>{
 });
 
 async function dynamo_db_con(phone_no, user_name,message_body){
-  let user = await animals.set(user_name, {
+  let user = await user.set("user_name", {
     phone_no: phone_no,
     message_body: message_body
 });
 }
+const CyclicDb = require("@cyclic.sh/dynamodb");
+const db = CyclicDb("long-jade-grasshopper-capCyclicDB");
+const user = db.collection("user");
 
 async function dynamo_db_con_getter(){
-  getter_item = await animals.get("leo");
+  getter_item = await user.get("user_name");
 }
 
 

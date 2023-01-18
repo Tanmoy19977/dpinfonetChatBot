@@ -1,6 +1,11 @@
 const express=require("express");
 const body_parser=require("body-parser");
 const axios=require("axios");
+
+const CyclicDb = require("@cyclic.sh/dynamodb");
+const db = CyclicDb("long-jade-grasshopper-capCyclicDB");
+const user = db.collection("user");
+
 require('dotenv').config();
 
 var getter_item;
@@ -35,15 +40,15 @@ app.get("/webhook",(req,res)=>{
 });
 
 async function dynamo_db_con(phone_no, user_name,message_body){
-  let user = await user.set("user_name", {
+  let user = await user.set(user_name, {
     phone_no: phone_no,
     message_body: message_body
 });
 }
 
 
-async function dynamo_db_con_getter(){
-  getter_item = await user.get("user_name");
+async function dynamo_db_con_getter(ele){
+  getter_item = await user.get(ele);
 }
 
 
@@ -67,9 +72,7 @@ app.post("/webhook",(req,res)=>{ //i want some
                let from = body_param.entry[0].changes[0].value.messages[0].from; 
                let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
 
-               const CyclicDb = require("@cyclic.sh/dynamodb");
-               const db = CyclicDb("long-jade-grasshopper-capCyclicDB");
-               const user = db.collection("user");
+               
 
                console.log("phone number "+phon_no_id);
                console.log("from "+from);
@@ -77,12 +80,12 @@ app.post("/webhook",(req,res)=>{ //i want some
 
                let massagee;
                try{
-                  dynamo_db_con(phon_no_id,from,msg_body).then;
+                  dynamo_db_con(phon_no_id,from,msg_body);
                }catch(err){
                   console.log(err);
                }
 
-               dynamo_db_con_getter().then;
+               dynamo_db_con_getter(from);
                
                console.log(getter_item);
                if(msg_body == "hi")
